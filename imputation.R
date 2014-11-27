@@ -4,6 +4,8 @@ mean.imp <- function(missing.data.csv){
 	missing.data <- .csv.to.frame(missing.data.csv)
 	imp <- mice(missing.data, method = "mean", m = 1, maxit = 1)
 	missing.vals <- imp$imp
+	missing.data <- .reconstruct.missing.vals(missing.data, missing.vals)
+	return(missing.data)
 
 }
 
@@ -13,7 +15,8 @@ regress.imp <- function(missing.data.csv){
 	missing.data <- .csv.to.frame(missing.data.csv)
 	imp <- mice(missing.data.csv , method = "norm.nob", m = 1, maxit = 1, seed = 1)
 	missing.vals <- imp$imp
-
+	missing.data <- .reconstruct.missing.vals(missing.data, missing.vals)	
+	return(missing.data)
 }
 
 # perform multiple imputation on the missing data csv file
@@ -24,6 +27,9 @@ mult.imps <- function(missing.data.csv){
 	# perform the default multiple imputation as defined by mice
 	imp <- mice(missing.data.csv)
 	missing.vals <- imp$imp
+
+	missing.data <- .reconstruct.missing.vals(missing.data, missing.vals)	
+	return(missing.data)
 }
 
 # 'private' method to convert the csv file to a frame and handle the missing
