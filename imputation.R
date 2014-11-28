@@ -13,7 +13,7 @@ mean.imp <- function(missing.data.csv){
 regress.imp <- function(missing.data.csv){
 	library("mice")
 	missing.data <- .csv.to.frame(missing.data.csv)
-	imp <- mice(missing.data.csv , method = "norm.nob", m = 1, maxit = 1, seed = 1)
+	imp <- mice(missing.data , method = "norm.nob", m = 1, maxit = 1, seed = 1)
 	missing.vals <- imp$imp
 	missing.data <- .reconstruct.missing.vals(missing.data, missing.vals)	
 	return(missing.data)
@@ -25,7 +25,7 @@ mult.imps <- function(missing.data.csv){
 	library("mice")
 	missing.data <- .csv.to.frame(missing.data.csv)
 	# perform the default multiple imputation as defined by mice
-	imp <- mice(missing.data.csv)
+	imp <- mice(missing.data)
 	missing.vals <- imp$imp
 
 	missing.data <- .reconstruct.missing.vals(missing.data, missing.vals)	
