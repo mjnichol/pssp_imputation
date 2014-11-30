@@ -28,6 +28,8 @@ mult.imps <- function(missing.data.csv, num_imps){
 	# perform the default multiple imputation as defined by mice
 	imp <- mice(missing.data, m = num_imps, printFlag = FALSE)
 	
+	print(imp$imp)
+
 	# prepare the multiple imputation list for passing to the csv output
 	list.imp <- vector(mode="list", length = num_imps)	
 	for (i in 1:num_imps){
