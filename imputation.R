@@ -1,45 +1,39 @@
 # perform mean imputation on the missing data csv file
 mean.imp <- function(missing.data.csv){
 	library("mice")
-	missing.data <- .csv.to.frame(missing.data.csv)
-	imp <- mice(missing.data, method = "mean", m = 1, maxit = 1)
-	missing.vals <- imp$imp
-	missing.data <- .reconstruct.missing.vals(missing.data, missing.vals)
-	return(missing.data)
-
+	missing.data <- read.table(missing.data.csv, header = TRUE, sep= ",", 
+		na.strings = c(" "))
+	imp <- mice(missing.data, method = "mean", m = 1, maxit = 1, printFlag = FALSE)
+	.impute.and.write(missing.data, imp$imp, missing.data.csv, "mean")
 }
 
 # perform regression imputation on the missing data csv file
 regress.imp <- function(missing.data.csv){
 	library("mice")
-	missing.data <- .csv.to.frame(missing.data.csv)
-	imp <- mice(missing.data , method = "norm.nob", m = 1, maxit = 1, seed = 1)
-	missing.vals <- imp$imp
-	missing.data <- .reconstruct.missing.vals(missing.data, missing.vals)	
-	return(missing.data)
+	missing.data <- read.table(missing.data.csv, header = TRUE, sep= ",", 
+		na.strings = c(" "))
+	imp <- mice(missing.data , method = "norm.nob", m = 1, maxit = 1, seed = 1, printFlag = FALSE)
+	.impute.and.write(missing.data, imp$imp, missing.data.csv, "regression")
 }
 
 # perform multiple imputation on the missing data csv file
 # This will output several frames!
 mult.imps <- function(missing.data.csv){
 	library("mice")
-	missing.data <- .csv.to.frame(missing.data.csv)
-	# perform the default multiple imputation as defined by mice
-	imp <- mice(missing.data)
-	missing.vals <- imp$imp
 
-	missing.data <- .reconstruct.missing.vals(missing.data, missing.vals)	
-	return(missing.data)
+	missing.data <- read.table(missing.data.csv, header = TRUE, sep= ",", 
+		na.strings = c(" "))
+	# perform the default multiple imputation as defined by mice
+	imp <- mice(missing.data, printFlag = FALSE)
+	.impute.and.write(missing.data, imp$imp, missing.data.csv, "mult")
 }
 
-# 'private' method to convert the csv file to a frame and handle the missing
-# entries correctly for mice's functions. In mice missing values are coded as
-# 'NA' entries 
-.csv.to.frame <- function(csv.file){
+# reinsert and write the imputation results to a suitably named output file
+.impute.and.write <- function(missing.data, missing.vals, csv, type){
 
-	data.frame = read.table(csv.file, header = TRUE, sep= ",", 
-		na.strings = c(" "))
-	return(data.frame)
+	missing.data <- .reconstruct.missing.vals(missing.data, missing.vals)
+	if( length( missing.data[is.na(missing.data)] ) > 0) stop("imputation failed: missing data still present")
+	write.csv(missing.data, file=paste(type, "imputation", csv, sep='_'))
 }
 
 # take the result with missing data values and then take result of the 
