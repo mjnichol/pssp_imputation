@@ -33,15 +33,11 @@ mult.imps <- function(missing.data.csv, num_imps){
 	for (i in 1:num_imps){
 		temp.imp = NULL		
 
-		for (j in 1:length(list.imp) ){
-			
+		for (j in 1:length(list.imp) ){	
 			temp.imp = c( temp.imp, imp$imp[[j]][i] )
 		}
-
 		list.imp[[i]] <- as.list(temp.imp)
 	}
-
-
 
 	for (i in 1:num_imps){
 					       
@@ -54,15 +50,7 @@ mult.imps <- function(missing.data.csv, num_imps){
 
 	missing.data <- .reconstruct.missing.vals(missing.data, missing.vals, type)
 	if( length( missing.data[is.na(missing.data)] ) > 0) stop("imputation failed: missing data still present")
-	write.csv(missing.data, file=paste(type, "imputation", csv, sep='_'))
-}
-
-# handle the case where you have to do multiple imputation, so you will be 
-# returning and writing a set of imputed values
-.multiple.imputation.handler <- function(imputation, missing.data){
-
-
-	return()
+	write.csv(missing.data, file=paste(type, "imputation", csv, sep='_'), row.names = FALSE)
 }
 
 # take the result with missing data values and then take result of the 
