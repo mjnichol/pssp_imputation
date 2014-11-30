@@ -1,0 +1,9 @@
+The methods of interest here are the mean.imp, regress.imp, and mult.imp, functions and are found in imputation.R. These perform the mean, regression, and multiple imputation of missing data respectively. They are called in the following way:
+
+mean.imp(missing.data.csv)
+regress.imp(missing.data.csv)
+multiple.imp(missing.data.csv, num.imputations)
+
+Where missing.data.csv is the path to the missing data file of interest and num.imputations is the number of imputations to perform in the case of multiple imputation.
+
+Each function produces a completed .csv file which is output in the directory in which you execute the program. The multiple imputation function will produce a number of csv outputs equal to num.imputations.

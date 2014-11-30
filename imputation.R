@@ -18,7 +18,7 @@ regress.imp <- function(missing.data.csv){
 
 # perform multiple imputation on the missing data csv file
 # This will output several frames!
-mult.imps <- function(missing.data.csv, num_imps){
+mult.imp <- function(missing.data.csv, num_imps){
 	library("mice")
 	
 	if ( num_imps < 2) stop("Number of imputations is too low!")
