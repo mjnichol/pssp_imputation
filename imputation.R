@@ -5,6 +5,7 @@ mean.imp <- function(missing.data.csv){
 		na.strings = c(" "))
 	imp <- mice(missing.data, method = "mean", m = 1, maxit = 1, printFlag = FALSE)
 	.impute.and.write(missing.data, imp$imp, missing.data.csv, "mean")
+    file.remove(missing.data.csv)
 }
 
 # perform regression imputation on the missing data csv file
@@ -14,6 +15,7 @@ regress.imp <- function(missing.data.csv){
 		na.strings = c(" "))
 	imp <- mice(missing.data , method = "norm.nob", m = 1, maxit = 1, seed = 1, printFlag = FALSE)
 	.impute.and.write(missing.data, imp$imp, missing.data.csv, "regression")
+    file.remove(missing.data.csv)
 }
 
 # perform multiple imputation on the missing data csv file
@@ -45,6 +47,7 @@ mult.imp <- function(missing.data.csv, num_imps){
 					       
 		.impute.and.write(missing.data, list.imp[[i]], paste(i, missing.data.csv, sep="_"), "mult")
 	}
+    file.remove(missing.data.csv)
 }
 
 # reinsert and write the imputation results to a suitably named output file
