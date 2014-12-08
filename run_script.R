@@ -9,8 +9,8 @@ iters = as.integer(args[3])
 
 if (switch == "mean.imp"){
 	mean.imp(file) 
-} else if (switch == "regress.imp"){
-	regress.imp(file)
+#} else if (switch == "regress.imp"){
+#	regress.imp(file)
 } else if (switch == "mult.imp"){
 	mult.imp(file, iters)
 } else {
