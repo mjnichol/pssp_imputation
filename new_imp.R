@@ -47,7 +47,7 @@ mult.imp <- function(csv, num_imps){
 		# if the program still fails throw an error!
 		if( length( filled.data[is.na(filled.data)] ) > 0) stop("imputation failed: missing data still present")
 		abs.dir <- paste(getwd(),"/", "mult_", i, "/", csv ,sep="")
-		write.csv(filled.data, file = paste(abs.dir, i, csv, sep='_'), row.names = FALSE)
+		write.csv(filled.data, file = abs.dir, row.names = FALSE)
 	}
 
 	file.remove(csv)
