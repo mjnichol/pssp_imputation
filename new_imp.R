@@ -20,11 +20,11 @@ mean.imp <- function(csv){
 
 	# if the program still fails throw an error!
 	if( length( filled.data[is.na(filled.data)] ) > 0) stop("imputation failed: missing data still present")
-
-	abs.dir <- paste(getwd(),"/", "mean_imputation/", csv, sep="")
+	file.remove(csv)
+	abs.dir <- paste(getwd(),"/", csv, sep="")
 
 	write.csv(filled.data, abs.dir, row.names = FALSE)
-	file.remove(csv)
+
 }
 
 # perform multiple imputation on the missing data csv file
@@ -38,6 +38,8 @@ mult.imp <- function(csv, num_imps){
 	# perform the default multiple imputation as defined by mice
 	imp <- mice(missing.data, m = num_imps, printFlag = FALSE)
 
+	orig <- csv
+
 	for (i in 1:num_imps){
 		filled.data <- complete(imp,i)
 		# perform the emergency mean on the missing columns
@@ -46,11 +48,12 @@ mult.imp <- function(csv, num_imps){
 		}
 		# if the program still fails throw an error!
 		if( length( filled.data[is.na(filled.data)] ) > 0) stop("imputation failed: missing data still present")
-		abs.dir <- paste(getwd(),"/", "mult_", i, "/", csv ,sep="")
+		csv <- sub(".csv", paste("_",i,".csv",sep=""), csv)
+		abs.dir <- paste(getwd(),"/", csv, sep="")
 		write.csv(filled.data, file = abs.dir, row.names = FALSE)
 	}
 
-	file.remove(csv)
+	file.remove(orig)
 }
 
 # perform regression imputation on the missing data csv file
